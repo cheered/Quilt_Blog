@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quilt.dao.ArticleCategoryDAO">
+  <resultMap id="BaseResultMap" type="com.quilt.entity.ArticleCategory">
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.quilt.entity.ArticleCategory">
+    insert into article_category (article_id, category_id)
+    values (#{articleId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.quilt.entity.ArticleCategory">
+    insert into article_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="insertArticleCategoryList" parameterType="java.util.List" >
+    insert into article_category (article_id, category_id) values
+    <foreach collection="articleCategories" item="item" separator=",">
+      (#{item.articleId,jdbcType=INTEGER}, #{item.categoryId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="deleteArticleCategoryByArticleId" parameterType="java.lang.Integer">
+    delete from article_category
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteArticleCategoryByCategoryId" parameterType="java.lang.Integer">
+    delete from article_category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getArticleCategoryByArticleId" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from article_category
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getArticleCategoryByCategoryId" parameterType="java.util.List" resultMap="BaseResultMap">
+    select * from article_category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getArticleCountByCategoryId" resultType="java.lang.Integer">
+    select count(*) from article_category
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+</mapper>

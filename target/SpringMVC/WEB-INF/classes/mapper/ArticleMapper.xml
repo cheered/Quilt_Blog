@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quilt.dao.ArticleDAO">
+  <resultMap id="BaseResultMap" type="com.quilt.entity.Article">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="article_type" jdbcType="INTEGER" property="articleType" />
+    <result column="issue_type" jdbcType="INTEGER" property="issueType" />
+    <result column="article_pic" jdbcType="VARCHAR" property="articlePic" />
+    <result column="view_count" jdbcType="INTEGER" property="viewCount" />
+    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.quilt.entity.ArticleWithBLOBs">
+    <result column="markdown_content" jdbcType="LONGVARCHAR" property="markdownContent" />
+    <result column="html_content" jdbcType="LONGVARCHAR" property="htmlContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, title, article_type, issue_type, article_pic, view_count, comment_count, 
+    update_time, create_time
+  </sql>
+  <sql id="Blob_Column_List">
+    markdown_content, html_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.quilt.entity.ArticleWithBLOBs">
+    insert into article (id, user_id, title, 
+      article_type, issue_type, article_pic, 
+      view_count, comment_count, update_time, 
+      create_time, markdown_content, html_content
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{articleType,jdbcType=INTEGER}, #{issueType,jdbcType=INTEGER}, #{articlePic,jdbcType=VARCHAR}, 
+      #{viewCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{markdownContent,jdbcType=LONGVARCHAR}, #{htmlContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.quilt.entity.ArticleWithBLOBs">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="articleType != null">
+        article_type,
+      </if>
+      <if test="issueType != null">
+        issue_type,
+      </if>
+      <if test="articlePic != null">
+        article_pic,
+      </if>
+      <if test="viewCount != null">
+        view_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="markdownContent != null">
+        markdown_content,
+      </if>
+      <if test="htmlContent != null">
+        html_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="articleType != null">
+        #{articleType,jdbcType=INTEGER},
+      </if>
+      <if test="issueType != null">
+        #{issueType,jdbcType=INTEGER},
+      </if>
+      <if test="articlePic != null">
+        #{articlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="viewCount != null">
+        #{viewCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="markdownContent != null">
+        #{markdownContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null">
+        #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quilt.entity.ArticleWithBLOBs">
+    update article
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="articleType != null">
+        article_type = #{articleType,jdbcType=INTEGER},
+      </if>
+      <if test="issueType != null">
+        issue_type = #{issueType,jdbcType=INTEGER},
+      </if>
+      <if test="articlePic != null">
+        article_pic = #{articlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="viewCount != null">
+        view_count = #{viewCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="markdownContent != null">
+        markdown_content = #{markdownContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null">
+        html_content = #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.quilt.entity.ArticleWithBLOBs">
+    update article
+    set user_id = #{userId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      article_type = #{articleType,jdbcType=INTEGER},
+      issue_type = #{issueType,jdbcType=INTEGER},
+      article_pic = #{articlePic,jdbcType=VARCHAR},
+      view_count = #{viewCount,jdbcType=INTEGER},
+      comment_count = #{commentCount,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      markdown_content = #{markdownContent,jdbcType=LONGVARCHAR},
+      html_content = #{htmlContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quilt.entity.Article">
+    update article
+    set user_id = #{userId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      article_type = #{articleType,jdbcType=INTEGER},
+      issue_type = #{issueType,jdbcType=INTEGER},
+      article_pic = #{articlePic,jdbcType=VARCHAR},
+      view_count = #{viewCount,jdbcType=INTEGER},
+      comment_count = #{commentCount,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insertArticleWithBLOBs" keyProperty="id" useGeneratedKeys="true" parameterType="com.quilt.entity.ArticleWithBLOBs">
+
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="articleType != null">
+        article_type,
+      </if>
+      <if test="issueType != null">
+        issue_type,
+      </if>
+      <if test="articlePic != null">
+        article_pic,
+      </if>
+      <if test="viewCount != null">
+        view_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="markdownContent != null">
+        markdown_content,
+      </if>
+      <if test="htmlContent != null">
+        html_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="articleType != null">
+        #{articleType,jdbcType=INTEGER},
+      </if>
+      <if test="issueType != null">
+        #{issueType,jdbcType=INTEGER},
+      </if>
+      <if test="articlePic != null">
+        #{articlePic,jdbcType=VARCHAR},
+      </if>
+      <if test="viewCount != null">
+        #{viewCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="markdownContent != null">
+        #{markdownContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null">
+        #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+
+  </insert>
+
+  <select id="getAllArticle" resultMap="BaseResultMap" >
+    select  <include refid="Base_Column_List" />
+    from  article order by create_time desc
+  </select>
+
+  <select id="getArticleCount" resultType="java.lang.Integer">
+    select count(*) from article
+  </select>
+
+  <select id="getTop8Article" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from article order by create_time desc limit 8
+  </select>
+
+  <select id="getAllArticleWithBLOBs" resultMap="ResultMapWithBLOBs" >
+    select * from article
+    where issue_type = 1
+    order by create_time desc
+  </select>
+
+  <select id="getArticleListByCategoryId" resultMap="BaseResultMap">
+    select article.id , article.title , article.create_time
+    from   article , article_category
+    where article.id = article_category.article_id
+    and article_category.category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getArticleListByTagId" resultMap="BaseResultMap">
+    select article.id , article.title , article.create_time
+    from article , article_tag
+    where article.id = article_tag.article_id
+    and  article_tag.tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+
+  <update id="viewCountPlusOne">
+    update article set view_count = view_count + 1
+    where id = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <select id="getArticleListByTitle" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from article
+    where title like concat(concat('%',#{title,jdbcType=VARCHAR}),'%')
+    order by create_time desc
+  </select>
+
+</mapper>
