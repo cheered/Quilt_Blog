@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quilt.dao.LogDAO">
+  <resultMap id="BaseResultMap" type="com.quilt.entity.Log">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="log_type" jdbcType="VARCHAR" property="logType" />
+    <result column="log_detail" jdbcType="VARCHAR" property="logDetail" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, log_type, log_detail, ip, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.quilt.entity.Log">
+    insert into log (id, log_type, log_detail, 
+      ip, create_time)
+    values (#{id,jdbcType=INTEGER}, #{logType,jdbcType=VARCHAR}, #{logDetail,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.quilt.entity.Log">
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="logType != null">
+        log_type,
+      </if>
+      <if test="logDetail != null">
+        log_detail,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="logType != null">
+        #{logType,jdbcType=VARCHAR},
+      </if>
+      <if test="logDetail != null">
+        #{logDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quilt.entity.Log">
+    update log
+    <set>
+      <if test="logType != null">
+        log_type = #{logType,jdbcType=VARCHAR},
+      </if>
+      <if test="logDetail != null">
+        log_detail = #{logDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quilt.entity.Log">
+    update log
+    set log_type = #{logType,jdbcType=VARCHAR},
+      log_detail = #{logDetail,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllLogRecord" resultMap="BaseResultMap">
+    select * from log order by  create_time desc
+  </select>
+
+  <select id="getLogCount" resultType="java.lang.Integer">
+    select count(*) from  log
+  </select>
+
+  <select id="getTop8Log" resultMap="BaseResultMap">
+    select * from log order by  create_time desc  limit 8
+  </select>
+
+</mapper>

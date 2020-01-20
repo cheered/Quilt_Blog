@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quilt.dao.CategoryDAO">
+  <resultMap id="BaseResultMap" type="com.quilt.entity.Category">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="category_pid" jdbcType="INTEGER" property="categoryPid" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="category_description" jdbcType="VARCHAR" property="categoryDescription" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_pid, category_name, category_description, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.quilt.entity.Category">
+    insert into category (id, category_pid, category_name, 
+      category_description, create_time)
+    values (#{id,jdbcType=INTEGER}, #{categoryPid,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
+      #{categoryDescription,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.quilt.entity.Category">
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="categoryPid != null">
+        category_pid,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="categoryDescription != null">
+        category_description,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="categoryPid != null">
+        #{categoryPid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDescription != null">
+        #{categoryDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quilt.entity.Category">
+    update category
+    <set>
+      <if test="categoryPid != null">
+        category_pid = #{categoryPid,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDescription != null">
+        category_description = #{categoryDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quilt.entity.Category">
+    update category
+    set category_pid = #{categoryPid,jdbcType=INTEGER},
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_description = #{categoryDescription,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllParentCategory" resultMap="BaseResultMap">
+    select * from  category where category_pid = 0
+  </select>
+
+  <select id="getAllChildCategory" resultMap="BaseResultMap">
+    select * from  category where category_pid != 0
+  </select>
+
+  <delete id="deleteAllCategoryByPid" parameterType="java.lang.Integer">
+    delete from category
+    where category_pid = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getChildCategory" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from category
+    where id = #{categoryPid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getCategoryCount" resultType="java.lang.Integer">
+    select count(*) from category
+  </select>
+
+</mapper>

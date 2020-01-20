@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quilt.dao.UserDAO">
+  <resultMap id="BaseResultMap" type="com.quilt.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="head_pic" jdbcType="VARCHAR" property="headPic" />
+    <result column="user_nickname" jdbcType="VARCHAR" property="userNickname" />
+    <result column="user_signature" jdbcType="VARCHAR" property="userSignature" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_tag" jdbcType="VARCHAR" property="userTag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.quilt.entity.UserWithBLOBs">
+    <result column="markdown_content" jdbcType="LONGVARCHAR" property="markdownContent" />
+    <result column="html_content" jdbcType="LONGVARCHAR" property="htmlContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, head_pic, user_nickname, user_signature, user_email, user_tag, 
+    create_time
+  </sql>
+  <sql id="Blob_Column_List">
+    markdown_content, html_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.quilt.entity.UserWithBLOBs">
+    insert into user (id, username, password, 
+      head_pic, user_nickname, user_signature, 
+      user_email, user_tag, create_time, 
+      markdown_content, html_content)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{headPic,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, #{userSignature,jdbcType=VARCHAR}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userTag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{markdownContent,jdbcType=LONGVARCHAR}, #{htmlContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.quilt.entity.UserWithBLOBs">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="headPic != null">
+        head_pic,
+      </if>
+      <if test="userNickname != null">
+        user_nickname,
+      </if>
+      <if test="userSignature != null">
+        user_signature,
+      </if>
+      <if test="userEmail != null">
+        user_email,
+      </if>
+      <if test="userTag != null">
+        user_tag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="markdownContent != null">
+        markdown_content,
+      </if>
+      <if test="htmlContent != null">
+        html_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null">
+        #{headPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null">
+        #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userTag != null">
+        #{userTag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="markdownContent != null">
+        #{markdownContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null">
+        #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.quilt.entity.UserWithBLOBs">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="headPic != null">
+        head_pic = #{headPic,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null">
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null">
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userTag != null">
+        user_tag = #{userTag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="markdownContent != null">
+        markdown_content = #{markdownContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="htmlContent != null">
+        html_content = #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.quilt.entity.UserWithBLOBs">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      head_pic = #{headPic,jdbcType=VARCHAR},
+      user_nickname = #{userNickname,jdbcType=VARCHAR},
+      user_signature = #{userSignature,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_tag = #{userTag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      markdown_content = #{markdownContent,jdbcType=LONGVARCHAR},
+      html_content = #{htmlContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.quilt.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      head_pic = #{headPic,jdbcType=VARCHAR},
+      user_nickname = #{userNickname,jdbcType=VARCHAR},
+      user_signature = #{userSignature,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_tag = #{userTag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--根据用户名获取全部用户-->
+  <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs" >
+    select * from  user
+    where  username = #{username,jdbcType=VARCHAR}
+  </select>
+</mapper>
